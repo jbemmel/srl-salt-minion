@@ -13,13 +13,15 @@ RUN sudo VIRTUAL_ENV=/opt/srl-salt-minion/.venv PATH=/opt/srl-salt-minion/.venv/
 
 # Install Salt minion Python libraries
 # See https://docs.saltproject.io/en/master/topics/installation/rhel.html for CENTOS 8 instructions
-#RUN sudo rpm --import https://repo.saltproject.io/py3/redhat/8/x86_64/latest/SALTSTACK-GPG-KEY.pub && \
-#    curl -fsSL https://repo.saltproject.io/py3/redhat/8/x86_64/latest.repo | sudo tee /etc/yum.repos.d/salt.repo && \
-#    sudo yum clean expire-cache && \
-#    sudo yum install -y salt-minion # salt-ssh
+RUN sudo rpm --import https://repo.saltproject.io/py3/redhat/8/x86_64/latest/SALTSTACK-GPG-KEY.pub && \
+    curl -fsSL https://repo.saltproject.io/py3/redhat/8/x86_64/latest.repo | sudo tee /etc/yum.repos.d/salt.repo && \
+    sudo yum clean expire-cache && \
+    sudo yum install -y salt-minion # salt-ssh
+    # sudo yum install -y --enablerepo=extras epel-release && \
 
-RUN sudo mkdir --mode=0755 -p /etc/opt/srlinux/appmgr/ /etc/salt/pki/minion/ /var/cache/salt /var/log/salt /var/run/salt/minion && \
-    sudo chown -R srlinux:srlinux /etc/salt /var/cache/salt /var/log/salt /var/run/salt
+RUN sudo mkdir --mode=0755 -p /etc/opt/srlinux/appmgr/ /etc/salt/pki/minion/ /var/cache/salt/minion/proc /var/log/salt /var/run/salt/minion && \
+    sudo chown -R srlinux:srlinux /etc/salt /var/cache/salt
+  # sudo chown -R srlinux:srlinux /etc/salt /var/cache/salt /var/log/salt /var/run/salt
 COPY --chown=srlinux:srlinux ./srl-salt-minion.yml /etc/opt/srlinux/appmgr
 COPY ./src /opt/
 

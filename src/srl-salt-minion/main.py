@@ -54,7 +54,9 @@ def Connect_To_Master(address):
            '__role': 'minion',
            'uuid': UUIDs[hostname] if hostname in UUIDs else '?',
            'enable_fqdns_grains': False, # No DNS available
-           'log_level': 'debug', 'log_level_logfile': 'debug',
+           'log_level': 'DEBUG', 'log_level_logfile': 'DEBUG',
+           'sock_dir': '/tmp'
+           # 'user': 'srlinux'
            # 'root_dir': os.environ['PWD']
          }
   try:
