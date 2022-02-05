@@ -82,8 +82,9 @@ if __name__ == "__main__":
     # while not os.path.exists('/var/run/netns/srbase-mgmt'):
     #  logging.info("Waiting for srbase-mgmt netns to be created...")
     #  time.sleep(1)
+    SDK_SERVER = 'unix:///opt/srlinux/var/run/sr_sdk_service_manager:50053' # "127.0.0.1:50053"
+    channel = grpc.insecure_channel(SDK_SERVER)
 
-    channel = grpc.insecure_channel("127.0.0.1:50053")
     metadata = [("agent_name", agent_name)]
     sdk_mgr_client = sdk_service_pb2_grpc.SdkMgrServiceStub(channel)
 

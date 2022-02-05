@@ -2,6 +2,8 @@ srl_salt_minion:
   path: /opt/srl-salt-minion
   launch-command: /opt/srl-salt-minion/scripts/run.sh
   search-command: python3 /opt/srl-salt-minion/main.py
+  # launch-in-net-namespace: true
+  # launch-by-request: true
   wait-for-config: Yes
   failure-threshold: 3
   failure-action: wait=forever
@@ -9,4 +11,4 @@ srl_salt_minion:
   yang-modules:
     names: ["srl-salt-minion"]
     source-directories:
-      - "/opt/srl-salt-minion/models"
+    - "/opt/srl-salt-minion/models"

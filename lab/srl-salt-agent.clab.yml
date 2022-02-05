@@ -15,9 +15,9 @@ topology:
       kind: linux
       image: ghcr.io/cdalvaro/docker-salt-master:latest
       mgmt_ipv4: 172.20.20.10
-      # binds:
+      binds:
       # - "../logs/salt-master:/home/salt/data/logs/"
-      # - "salt-master-config:/home/salt/data/config/"
+      - "salt-master-config:/home/salt/data/config/"
       # - "salt-master-data:/home/salt/data"
     srl1:
       startup-config: allow-salt-tcp.cmd

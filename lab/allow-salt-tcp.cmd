@@ -1,3 +1,4 @@
+/system gnmi-server unix-socket admin-state enable
 /acl cpm-filter ipv4-filter entry 345 {
 		description "Allow communication from Minion to Salt-master"
         action {

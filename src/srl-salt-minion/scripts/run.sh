@@ -25,7 +25,7 @@ function main()
     # and the correct python version is used
     source "${virtual_env}"
 
-    python3 ${main_module} &
+    ip netns exec srbase-mgmt python3 ${main_module} &
 
     child=$!
     wait "$child"
