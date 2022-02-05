@@ -18,8 +18,8 @@ RUN sudo VIRTUAL_ENV=/opt/srl-salt-minion/.venv PATH=/opt/srl-salt-minion/.venv/
 #    sudo yum clean expire-cache && \
 #    sudo yum install -y salt-minion # salt-ssh
 
-RUN sudo mkdir --mode=0755 -p /etc/opt/srlinux/appmgr/ /etc/salt/pki/minion/ /var/cache/salt /var/log/salt && \
-    sudo chown -R srlinux:srlinux /etc/salt /var/cache/salt /var/log/salt
+RUN sudo mkdir --mode=0755 -p /etc/opt/srlinux/appmgr/ /etc/salt/pki/minion/ /var/cache/salt /var/log/salt /var/run/salt/minion && \
+    sudo chown -R srlinux:srlinux /etc/salt /var/cache/salt /var/log/salt /var/run/salt
 COPY --chown=srlinux:srlinux ./srl-salt-minion.yml /etc/opt/srlinux/appmgr
 COPY ./src /opt/
 

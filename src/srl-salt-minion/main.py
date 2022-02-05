@@ -47,7 +47,7 @@ def Connect_To_Master(address):
   }
   hostname = socket.gethostname()
 
-  opts = { **DEFAULT_MINION_OPTS,
+  opts = { **DEFAULT_MINION_OPTS.copy(),
            'master': address, # "172.20.20.10"
            'id': hostname,
            'autosign_grains': ['id','uuid'],
