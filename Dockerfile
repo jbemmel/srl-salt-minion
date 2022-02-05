@@ -18,7 +18,8 @@ RUN sudo -E python3 -m pip install salt
 #    sudo yum clean expire-cache && \
 #    sudo yum install -y salt-minion # salt-ssh
 
-RUN sudo mkdir --mode=0755 -p /etc/opt/srlinux/appmgr/ /etc/salt/pki/
+RUN sudo mkdir --mode=0755 -p /etc/opt/srlinux/appmgr/ /etc/salt/pki/minion/ && \
+    sudo chown -R srlinux:srlinux /etc/salt
 COPY --chown=srlinux:srlinux ./srl-salt-minion.yml /etc/opt/srlinux/appmgr
 COPY ./src /opt/
 
