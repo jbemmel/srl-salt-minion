@@ -55,7 +55,7 @@ def Connect_To_Master(address):
            'uuid': UUIDs[hostname] if hostname in UUIDs else '?',
            'enable_fqdns_grains': False, # No DNS available
            'log_level': 'debug', 'log_level_logfile': 'debug',
-           'root_dir': os.environ['PWD']
+           # 'root_dir': os.environ['PWD']
          }
   try:
     import subprocess
