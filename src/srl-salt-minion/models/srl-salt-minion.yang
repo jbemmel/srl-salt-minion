@@ -1,0 +1,20 @@
+module srl-salt-minion {
+    yang-version 1.1;
+    namespace "example.com/srl-salty-minion-agent";
+    prefix "srl-labs-srl-salty-minion-agent";
+    description "srl-salty-minion-agent YANG module";
+    revision "2022-02-01" {
+        description "initial release";
+    }
+
+    container srl-salty-minion-agent {
+        presence "Salt minion agent configuration";
+        leaf master {
+          description "IP address or hostname of salt master";
+          type string;
+          // mandatory true;
+          // default "salt-master";
+          default "172.20.20.10";
+        }
+    }
+}

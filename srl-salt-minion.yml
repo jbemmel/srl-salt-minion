@@ -1,0 +1,12 @@
+srl_salt_minion:
+  path: /opt/srl-salt-minion
+  launch-command: /opt/srl-salt-minion/scripts/run.sh
+  search-command: python3 /opt/srl-salt-minion/main.py
+  wait-for-config: Yes
+  failure-threshold: 3
+  failure-action: wait=forever
+  author: 'Nokia'
+  yang-modules:
+    names: ["srl-salt-minion"]
+    source-directories:
+      - "/opt/srl-salt-minion/models"
