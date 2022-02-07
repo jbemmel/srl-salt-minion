@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-import grpc, socket, json, sys, os
+import grpc, socket, json, sys, os, time
 
 from datetime import datetime
 
@@ -33,8 +33,25 @@ def Handle_Notification(obj):
       # threading.Thread( target=Connect_To_Master, args=( data["master"]["value"], ) ).start()
       # Need to use the main thread
       if 'master' in data:
-         Connect_To_Master( data["master"]["value"] )
+         # Connect_To_Master( data["master"]["value"] )
+         Start_Minion( data["master"]["value"] )
 
+def Start_Minion(master):
+    """
+    Creates a minimal config file and (re)starts the salt-minion process
+    """
+    with open('/etc/salt/minion.d/srl_minion_agent.conf',"w") as conf_file:
+        conf_file.write( f"master: {master}\n" )
+
+    while not os.path.exists('/var/run/netns/srbase-mgmt'):
+      logging.info("Waiting for srbase-mgmt netns to be created...")
+      time.sleep(1)
+    logging.info( f"Starting /usr/bin/salt-minion (as root) using master {master}" )
+    os.system( "/usr/sbin/ip netns exec srbase-mgmt sudo /usr/bin/salt-minion -d" ) # Could pass --saltfile
+
+#
+# This has some issues getting permissions and settings right
+#
 def Connect_To_Master(address):
 
   # Salt specific
@@ -96,22 +113,25 @@ if __name__ == "__main__":
     logging.info(f"Agent succesfully registered! App ID: {response.app_id}")
 
     # Subscribe to configuration events
-    request=sdk_service_pb2.NotificationRegisterRequest(op=sdk_service_pb2.NotificationRegisterRequest.Create)
-    create_subscription_response = sdk_mgr_client.NotificationRegister(request=request, metadata=metadata)
-    stream_id = create_subscription_response.stream_id
-    logging.info(f"Create subscription response received. stream_id : {stream_id}")
+    def SubscribeToConfig():
+      request=sdk_service_pb2.NotificationRegisterRequest(op=sdk_service_pb2.NotificationRegisterRequest.Create)
+      create_subscription_response = sdk_mgr_client.NotificationRegister(request=request, metadata=metadata)
+      stream_id = create_subscription_response.stream_id
+      logging.info(f"Create subscription response received. stream_id : {stream_id}")
 
-    cfgsubreq = config_service_pb2.ConfigSubscriptionRequest()
-    request = sdk_service_pb2.NotificationRegisterRequest(
-     op=sdk_service_pb2.NotificationRegisterRequest.AddSubscription,
-     stream_id=stream_id, config=cfgsubreq)
-    subscription_response = sdk_mgr_client.NotificationRegister(request=request, metadata=metadata)
+      cfgsubreq = config_service_pb2.ConfigSubscriptionRequest()
+      request = sdk_service_pb2.NotificationRegisterRequest(
+       op=sdk_service_pb2.NotificationRegisterRequest.AddSubscription,
+       stream_id=stream_id, config=cfgsubreq)
+      subscription_response = sdk_mgr_client.NotificationRegister(request=request, metadata=metadata)
 
-    stream_request = sdk_service_pb2.NotificationStreamRequest(stream_id=stream_id)
-    sub_stub = sdk_service_pb2_grpc.SdkNotificationServiceStub(channel)
-    stream_response = sub_stub.NotificationStream(stream_request, metadata=metadata)
+      stream_request = sdk_service_pb2.NotificationStreamRequest(stream_id=stream_id)
+      sub_stub = sdk_service_pb2_grpc.SdkNotificationServiceStub(channel)
+      return sub_stub.NotificationStream(stream_request, metadata=metadata)
 
-    try:
+    while True:
+     stream_response = SubscribeToConfig()
+     try:
       # Blocking call to wait for events
       for r in stream_response:
         logging.info(f"NOTIFICATION:: \n{r.notification}")
@@ -120,7 +140,13 @@ if __name__ == "__main__":
                 logging.info('TO DO -commit.end config')
             else:
                 Handle_Notification(obj)
-    except Exception as ex:
+     except grpc.RpcError as rpc_error:
+      logging.error( rpc_error )
+      if rpc_error.code() == grpc.StatusCode.UNKNOWN:
+        # Start new notification stream
+        continue # Ignore "Notification stream has been deleted"
+     except Exception as ex:
       logging.error( ex )
+     break
 
     logging.info( "SRL Salt minion agent exiting..." )

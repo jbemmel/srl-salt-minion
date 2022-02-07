@@ -1,6 +1,6 @@
 srl_salt_minion:
-  path: /opt/srl-salt-minion
-  launch-command: sudo /opt/srl-salt-minion/scripts/run.sh
+  path: /opt/srl-salt-minion/.venv/bin/
+  launch-command: /opt/srl-salt-minion/scripts/run.sh
   search-command: python3 /opt/srl-salt-minion/main.py
   # launch-in-net-namespace: true
   # launch-by-request: true
