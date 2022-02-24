@@ -32,3 +32,5 @@
             }
         }
     }
+
+/srl-salty-minion-agent master 172.20.20.10
