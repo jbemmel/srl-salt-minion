@@ -6,9 +6,9 @@ RUN sudo python3 -m venv /opt/srl-salt-minion/.venv --system-site-packages --wit
 ENV VIRTUAL_ENV=/opt/srl-salt-minion/.venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-# Install Salt Python library
+# Install Salt Python library and Nornir extensions for salt
 # RUN sudo bash -c "source $VIRTUAL_ENV/bin/activate && python3 -m pip install salt"
-RUN sudo VIRTUAL_ENV=/opt/srl-salt-minion/.venv PATH=/opt/srl-salt-minion/.venv/bin:${PATH} python3 -m pip install salt
+RUN sudo VIRTUAL_ENV=/opt/srl-salt-minion/.venv PATH=/opt/srl-salt-minion/.venv/bin:${PATH} python3 -m pip install salt salt_nornir
 
 
 # Install Salt minion Python libraries

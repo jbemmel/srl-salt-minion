@@ -47,6 +47,8 @@ def Start_Minion(master):
       logging.info("Waiting for srbase-mgmt netns to be created...")
       time.sleep(1)
     logging.info( f"Starting /usr/bin/salt-minion (as root) using master {master}" )
+    os.environ[ 'VIRTUAL_ENV' ] = "/opt/srl-salt-minion/.venv"
+    os.environ[ 'PATH' ] = f"/opt/srl-salt-minion/.venv/bin:{os.environ['PATH']}"
     os.system( "/usr/sbin/ip netns exec srbase-mgmt sudo /usr/bin/salt-minion -d" ) # Could pass --saltfile
 
 #
