@@ -16,6 +16,9 @@ groups:
     username: admin
     password: admin
     connection_options:
+      netmiko:
+        extras:
+          device_type: nokia_srl
       scrapli:
         platform: nokia_srlinux # requires pip install scrapli-community
         port: 22
