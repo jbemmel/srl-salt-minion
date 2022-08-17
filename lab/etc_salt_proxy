@@ -1,0 +1,6 @@
+master: 172.20.20.10 # IP address or FQDN of master machine e.g. localhost or master.lab
+multiprocessing: false # default, but overridden in Nornir proxy minion pillar
+mine_enabled: true # not required, but nice to have
+pki_dir: /etc/salt/pki/proxy # not required - this separates the proxy keys into a different directory
+log_level: debug # default is warning, adjust as required
+add_proxymodule_to_opts: false

@@ -13,14 +13,34 @@ topology:
   nodes:
     salt-master:
       kind: linux
-      image: ghcr.io/cdalvaro/docker-salt-master:latest
+      # image: ghcr.io/cdalvaro/docker-salt-master:latest
+      image: jbemmel/docker-salt-master-proxy:latest
       mgmt_ipv4: 172.20.20.10
+      env:
+       SALT_LOG_LEVEL: debug
       binds:
       # - "../logs/salt-master:/home/salt/data/logs/"
+      - "salt-proxy.conf:/etc/supervisor/conf.d/salt-proxy.conf"
+      - "etc_salt_proxy:/etc/salt/proxy"
       - "salt-master-config:/home/salt/data/config/"
+      - "pillar_top.sls:/home/salt/data/srv/pillar/top.sls"
+      - "nornir_proxy.sls:/home/salt/data/srv/pillar/nornir_proxy.sls"
+      # - "srl1.sls:/home/salt/data/srv/pillar/srl1.sls"
+      # - "srl2.sls:/home/salt/data/srv/pillar/srl2.sls"
+
       # - "salt-master-data:/home/salt/data"
+
+    # see https://salt-nornir.readthedocs.io/en/latest/Getting%20started.html#configure-proxy-minion
+    # salt-proxy:
+    #  kind: linux
+    #  image: ghcr.io/cdalvaro/docker-salt-master:latest
+    #  binds:
+    #  - "etc_salt_proxy:/etc/salt/proxy"
+    #  cmd: "salt-proxy --proxyid=nornir-proxy -l debug"
+
     srl1:
       startup-config: allow-salt-tcp.cmd
+      mgmt_ipv4: 172.20.20.21
       # binds:
       #   - "../srl-salty-minion-agent:/opt/srl-salty-minion-agent" # mount dir with agent code
       #   - "../logs/srl1:/var/log/srlinux" # expose srlinux logs to a dev machine
@@ -29,6 +49,7 @@ topology:
       #   - "../logs/srl1:/home/salt/data/logs/"
     srl2:
       startup-config: allow-salt-tcp.cmd
+      mgmt_ipv4: 172.20.20.22
       # binds:
       #   - "../srl-salty-minion-agent:/opt/srl-salty-minion-agent" # mount dir with agent code
       #   - "../logs/srl2:/var/log/srlinux" # expose srlinux logs to a dev machine
