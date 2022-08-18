@@ -17,11 +17,12 @@ topology:
       image: jbemmel/docker-salt-master-proxy:latest
       mgmt_ipv4: 172.20.20.10
       env:
-       SALT_LOG_LEVEL: info
+       SALT_LOG_LEVEL: debug
       binds:
       # - "../logs/salt-master:/home/salt/data/logs/"
       - "etc_salt_proxy:/etc/salt/proxy"
       - "salt-master-config:/home/salt/data/config/"
+      - "set_hostname.j2:/home/salt/data/srv/salt/templates/set_hostname.j2"
       - "pillar_top.sls:/home/salt/data/srv/pillar/top.sls"
       - "nornir_proxy.sls:/home/salt/data/srv/pillar/nornir_proxy.sls"
       # - "salt-master-data:/home/salt/data"

@@ -19,6 +19,12 @@ groups:
       netmiko:
         extras:
           device_type: nokia_srl
+      pygnmi:
+        extras:
+          # path_cert: "./certs/srlinux.pem"
+          encoding: json_ietf
+          skip_verify: True
+          debug: True
       scrapli:
         platform: nokia_srlinux # requires pip install scrapli-community
         port: 22
