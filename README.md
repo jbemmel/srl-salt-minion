@@ -29,6 +29,27 @@ salt-key -L
 salt '*' test.ping
 salt '*' test.version
 ```
+
+### Access via Nornir proxy
+
+It is possible to access SR Linux devices through a Nornir proxy:
+```
+salt proxy nr.cli "show version"
+```
+
+Likewise, a configuration template can be applied to all devices (or a subset):
+```
+salt proxy nr.cfg_gen filename=salt://templates/set_hostname.j2 plugin=netmiko  # test only
+salt proxy nr.cfg filename=salt://templates/set_hostname.j2 plugin=netmiko
+```
+
+Lastly, gNMI can be used to retrieve or configure device settings:
+```
+salt proxy nr.gnmi get /system/name
+```
+Note that the above does not quite work yet; nornir-pygnmi module has limited debug output
+
+
 ## Resources:
 
 * [Salt Minion library](https://github.com/saltstack/salt/blob/master/salt/minion.py) - instantiate a Minion object, provide location of its master
