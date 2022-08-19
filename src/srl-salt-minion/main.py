@@ -62,7 +62,7 @@ beacons:
       logging.info("Waiting for srbase-mgmt netns to be created...")
       time.sleep(1)
     logging.info( f"Starting /usr/bin/salt-minion (as root, in srbase-mgmt netns) using master '{master}' and loglevel {loglevel}" )
-    ret = os.system( f"/usr/bin/sudo /usr/sbin/ip netns exec srbase-mgmt /usr/bin/sudo /usr/bin/salt-minion -d --log-file-level={loglevel}" ) # Could pass --saltfile
+    ret = os.system( f"/usr/bin/sudo /usr/sbin/ip netns exec srbase-mgmt /opt/srl-salt-minion/scripts/run_salt_minion.sh {loglevel}" ) # Could pass --saltfile
     logging.info( f"Return code: {ret}" )
 
 #
