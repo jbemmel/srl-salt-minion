@@ -34,20 +34,35 @@ def Handle_Notification(obj):
       # Need to use the main thread
       if 'master' in data:
          # Connect_To_Master( data["master"]["value"] )
-         Start_Minion( data["master"]["value"] )
+         Start_Minion( data["master"]["value"], data["loglevel"][9:] )
 
-def Start_Minion(master):
+def Start_Minion(master,loglevel):
     """
     Creates a minimal config file and (re)starts the salt-minion process
     """
+    CONF = f"""
+master: {master}
+enable_gpu_grains: False
+enable_fqdns_grains: False
+
+beacons:
+  inotify:
+    - files:
+        /etc/opt/srlinux/config.json:
+          mask:
+            - modify
+    - interval: 1
+    - disable_during_state_run: True
+"""
+
     with open('/etc/salt/minion.d/srl_minion_agent.conf',"w") as conf_file:
-      conf_file.write( f"master: {master}\nenable_gpu_grains: False\nenable_fqdns_grains: False\n" )
+      conf_file.write( CONF )
 
     while not os.path.exists('/var/run/netns/srbase-mgmt'):
       logging.info("Waiting for srbase-mgmt netns to be created...")
       time.sleep(1)
-    logging.info( f"Starting /usr/bin/salt-minion (as root, in srbase-mgmt netns) using master '{master}'" )
-    ret = os.system( "/usr/bin/sudo /usr/sbin/ip netns exec srbase-mgmt /usr/bin/sudo /usr/bin/salt-minion -d --log-file-level=all" ) # Could pass --saltfile
+    logging.info( f"Starting /usr/bin/salt-minion (as root, in srbase-mgmt netns) using master '{master}' and loglevel {loglevel}" )
+    ret = os.system( f"/usr/bin/sudo /usr/sbin/ip netns exec srbase-mgmt /usr/bin/sudo /usr/bin/salt-minion -d --log-file-level={loglevel}" ) # Could pass --saltfile
     logging.info( f"Return code: {ret}" )
 
 #

@@ -21,12 +21,8 @@ topology:
       binds:
       # - "../logs/salt-master:/home/salt/data/logs/"
       - "etc_salt_proxy:/etc/salt/proxy"
-      - "salt-master-config:/home/salt/data/config/"
-      - "set_hostname.j2:/home/salt/data/srv/salt/templates/set_hostname.j2"
-      - "pillar_top.sls:/home/salt/data/srv/pillar/top.sls"
-      - "nornir_proxy.sls:/home/salt/data/srv/pillar/nornir_proxy.sls"
-      - "srl1_using_netmiko_proxy.sls:/home/salt/data/srv/pillar/srl1_using_netmiko_proxy.sls"
-      - "clab-srl-salt-agent/ca/root/root-ca.pem:/home/salt/data/keys/root-ca.pem"
+      - "salt_data:/home/salt/data/"
+      # - "clab-srl-salt-agent/ca/root/root-ca.pem:/home/salt/data/keys/root-ca.pem"
       # - "salt-master-data:/home/salt/data"
 
     # see https://salt-nornir.readthedocs.io/en/latest/Getting%20started.html#configure-proxy-minion

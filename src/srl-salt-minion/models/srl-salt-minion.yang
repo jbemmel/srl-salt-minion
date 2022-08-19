@@ -16,5 +16,16 @@ module srl-salt-minion {
           // default "salt-master";
           default "172.20.20.10";
         }
+        leaf loglevel {
+          description "Debug level for minion log file";
+          type enumeration {
+            enum debug;
+            enum all;
+            enum info;
+            enum warning;
+            enum error;
+          }
+          default "debug";
+        }
     }
 }
