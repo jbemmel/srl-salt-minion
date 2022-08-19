@@ -23,6 +23,7 @@ topology:
       - "etc_salt_proxy:/etc/salt/proxy"
       - "salt_data_config:/home/salt/data/config/"
       - "salt_data_srv:/home/salt/data/srv/"
+      - "/Projects/srlinux-22.6.1-281.bin:/home/salt/srlinux-22.6.1-281.bin"
       # - "clab-srl-salt-agent/ca/root/root-ca.pem:/home/salt/data/keys/root-ca.pem"
       # - "salt-master-data:/home/salt/data"
 
