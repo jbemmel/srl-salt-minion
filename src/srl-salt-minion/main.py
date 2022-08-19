@@ -41,13 +41,14 @@ def Start_Minion(master):
     Creates a minimal config file and (re)starts the salt-minion process
     """
     with open('/etc/salt/minion.d/srl_minion_agent.conf',"w") as conf_file:
-        conf_file.write( f"master: {master}\n" )
+        conf_file.write( f"master: {master}\nenable_gpu_grains: False\n" )
 
     while not os.path.exists('/var/run/netns/srbase-mgmt'):
       logging.info("Waiting for srbase-mgmt netns to be created...")
       time.sleep(1)
-    logging.info( f"Starting /usr/bin/salt-minion (as root) using master {master}" )
-    os.system( "/usr/sbin/ip netns exec srbase-mgmt sudo /usr/bin/salt-minion -d" ) # Could pass --saltfile
+    logging.info( f"Starting /usr/bin/salt-minion (as root, in srbase-mgmt netns) using master '{master}'" )
+    ret = os.system( "/usr/bin/sudo /usr/sbin/ip netns exec srbase-mgmt /usr/bin/sudo /usr/bin/salt-minion -d --log-file-level=all" ) # Could pass --saltfile
+    logging.info( f"Return code: {ret}" )
 
 #
 # This has some issues getting permissions and settings right

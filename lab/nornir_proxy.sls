@@ -20,11 +20,10 @@ groups:
         extras:
           device_type: nokia_srl
       pygnmi:
+        port: 57400
         extras:
-          # path_cert: "./certs/srlinux.pem"
-          encoding: json_ietf
+          path_cert: "/home/salt/data/keys/root-ca.pem"
           skip_verify: True
-          debug: True
       scrapli:
         platform: nokia_srlinux # requires pip install scrapli-community
         port: 22

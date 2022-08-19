@@ -25,6 +25,7 @@ topology:
       - "set_hostname.j2:/home/salt/data/srv/salt/templates/set_hostname.j2"
       - "pillar_top.sls:/home/salt/data/srv/pillar/top.sls"
       - "nornir_proxy.sls:/home/salt/data/srv/pillar/nornir_proxy.sls"
+      - "clab-srl-salt-agent/ca/root/root-ca.pem:/home/salt/data/keys/root-ca.pem"
       # - "salt-master-data:/home/salt/data"
 
     # see https://salt-nornir.readthedocs.io/en/latest/Getting%20started.html#configure-proxy-minion
