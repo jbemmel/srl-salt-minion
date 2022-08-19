@@ -28,6 +28,7 @@ docker exec -it clab-srl-salt-agent-salt-master bash
 salt-key -L
 salt '*' test.ping
 salt '*' test.version
+salt 'srl*' cmd.run '/opt/srlinux/bin/sr_cli "show version"'
 ```
 
 ### Access via Nornir proxy

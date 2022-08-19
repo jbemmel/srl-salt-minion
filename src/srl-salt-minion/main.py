@@ -41,7 +41,7 @@ def Start_Minion(master):
     Creates a minimal config file and (re)starts the salt-minion process
     """
     with open('/etc/salt/minion.d/srl_minion_agent.conf',"w") as conf_file:
-        conf_file.write( f"master: {master}\nenable_gpu_grains: False\n" )
+      conf_file.write( f"master: {master}\nenable_gpu_grains: False\nenable_fqdns_grains: False\n" )
 
     while not os.path.exists('/var/run/netns/srbase-mgmt'):
       logging.info("Waiting for srbase-mgmt netns to be created...")
