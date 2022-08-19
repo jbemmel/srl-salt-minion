@@ -1,5 +1,5 @@
 Backup config upon file changed event:
   local.state.apply:
-    - tgt: {{ data['hostname'] }}
+    - tgt: {{ data['id'] }}
     - arg:
         - backup_config
