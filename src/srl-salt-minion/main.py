@@ -34,9 +34,9 @@ def Handle_Notification(obj):
       # Need to use the main thread
       if 'master' in data:
          # Connect_To_Master( data["master"]["value"] )
-         Start_Minion( data["master"]["value"], data["loglevel"][9:] )
+         Start_Minion( data["master"]["value"], data["role"][5:], data["loglevel"][9:] )
 
-def Start_Minion(master,loglevel):
+def Start_Minion(master,role,loglevel):
     """
     Creates a minimal config file and (re)starts the salt-minion process
     """
@@ -44,6 +44,9 @@ def Start_Minion(master,loglevel):
 master: {master}
 enable_gpu_grains: False
 enable_fqdns_grains: False
+
+grains:
+  role: {role}
 
 beacons:
   inotify:

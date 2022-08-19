@@ -1,9 +1,6 @@
 ARG SR_LINUX_RELEASE
 FROM srl/custombase:$SR_LINUX_RELEASE AS target-image
 
-# Upgrade system version of venv virtualenv-15.1.0 > virtualenv-20.16.3
-RUN sudo pip3 install virtualenv --upgrade
-
 # Create a Python virtual environment, note --upgrade is broken. Tried without --system-site-packages --without-pip
 RUN sudo python3 -m venv /opt/srl-salt-minion/.venv --system-site-packages --without-pip
 ENV VIRTUAL_ENV=/opt/srl-salt-minion/.venv

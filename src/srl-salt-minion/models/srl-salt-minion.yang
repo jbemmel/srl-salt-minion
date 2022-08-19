@@ -16,6 +16,16 @@ module srl-salt-minion {
           // default "salt-master";
           default "172.20.20.10";
         }
+        leaf role {
+          description "Role of this node in the network, default TOR";
+          type enumeration {
+            enum TOR;
+            enum SPN;
+            enum AGG;
+            enum ISP;
+          }
+          default "TOR";
+        }
         leaf loglevel {
           description "Debug level for minion log file";
           type enumeration {
