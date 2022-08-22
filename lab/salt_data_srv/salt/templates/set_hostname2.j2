@@ -1,0 +1,9 @@
+#!/bin/bash
+
+/opt/srlinux/bin/sr_cli -ec --commit-at-end << 'EOF'
+system {
+ name {
+  host-name "{{ grains[ 'host' ] }}"
+ }
+}
+EOF
