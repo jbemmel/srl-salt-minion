@@ -30,6 +30,8 @@ salt '*' test.ping
 salt -G role:TOR test.version
 salt 'srl*' cmd.run '/opt/srlinux/bin/sr_cli "show version"'
 salt '*' cmd.run '/usr/local/bin/gnmic -u admin -p admin -a unix:///opt/srlinux/var/run/sr_gnmi_server --insecure -e json_ietf get --path /system/name'
+salt 'srl1' cmd.run '/opt/srlinux/bin/sr_cli "tools system deploy-image /tmp/srlinux-22.6.1-281.bin reboot"'
+salt srl1 cmd.script salt://templates/set_hostname2.j2 template=jinja args='{ hostname: jvb }'
 ```
 
 ### Access via Nornir proxy

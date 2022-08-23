@@ -6,10 +6,20 @@ hosts:
     hostname: 172.20.20.21
     platform: nokia_srl
     groups: [lab]
+    connection_options:
+     pygnmi:
+      port: 57400
+      extras:
+       path_cert: "/home/salt/srl1.pem"
   SRL2:
     hostname: 172.20.20.22
     platform: nokia_srl
     groups: [lab]
+    connection_options:
+     pygnmi:
+      port: 57400
+      extras:
+       path_cert: "/home/salt/srl2.pem"
 
 groups:
   lab:
@@ -21,9 +31,9 @@ groups:
           device_type: nokia_srl
       pygnmi:
         port: 57400
-        extras:
-          path_cert: "/home/salt/data/keys/root-ca.pem"
-          skip_verify: True
+        # extras:
+        #  path_cert: "/home/salt/data/keys/root-ca.pem"
+        #  skip_verify: True
       scrapli:
         platform: nokia_srlinux # requires pip install scrapli-community
         port: 22
@@ -32,7 +42,7 @@ groups:
           auth_strict_key: false
           ssh_config_file: false
       napalm:
-        platform: srlinux
+        platform: srl
         extras:
           optional_args:
             auto_probe: 0

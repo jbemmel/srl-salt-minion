@@ -3,7 +3,11 @@
 /opt/srlinux/bin/sr_cli -ec --commit-at-end << 'EOF'
 system {
  name {
-  host-name "{{ grains[ 'host' ] }}"
+# grains[ 'host' ]
+# {{ pillar.get('hostname','x') }}
+# show_full_context()|yaml(False)
+  host-name "{{ __pub_arg[1]['args']['hostname'] }}"
  }
 }
+
 EOF

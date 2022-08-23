@@ -48,6 +48,10 @@ enable_fqdns_grains: False
 grains:
   role: {role}
 
+ssl:
+  keyfile: /etc/opt/srlinux/tls/clab-profile.key.pem
+  certfile: /etc/opt/srlinux/tls/clab-profile.pem
+
 beacons:
   inotify:
     - files:

@@ -9,7 +9,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 # Install Salt Python library and Nornir extensions for salt
 # RUN sudo bash -c "source $VIRTUAL_ENV/bin/activate && python3 -m pip install salt"
 RUN sudo VIRTUAL_ENV=/opt/srl-salt-minion/.venv PATH=/opt/srl-salt-minion/.venv/bin:${PATH} \
-        $VIRTUAL_ENV/bin/python3 -m pip install salt nornir-salt salt-nornir
+        $VIRTUAL_ENV/bin/python3 -m pip install salt==3004.2 nornir-salt salt-nornir
 
 # Upgrade system version of urllib3, workaround (should be staying within virtualenv)
 RUN sudo pip3 install requests urllib3 --upgrade
