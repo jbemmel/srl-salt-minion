@@ -1,0 +1,60 @@
+name: "srl-salt-agent"
+
+topology:
+  defaults:
+    kind: srl
+    image: srl/salt-minion:latest
+
+  kinds:
+    srl:
+     extras:
+      srl-agents: [ ../srl-salt-minion.yml, ../../srl-prometheus-exporter/yml/prometheus-exporter.yml ]
+
+  nodes:
+    salt-master:
+      kind: linux
+      # image: ghcr.io/cdalvaro/docker-salt-master:latest
+      image: jbemmel/docker-salt-master-proxy:latest
+      mgmt_ipv4: 172.20.20.10
+      env:
+       SALT_LOG_LEVEL: debug
+      binds:
+      # - "../logs/salt-master:/home/salt/data/logs/"
+      - "etc_salt_proxy:/etc/salt/proxy"
+      - "salt_data_config:/home/salt/data/config/"
+      - "salt_data_srv:/home/salt/data/srv/"
+      - "clab-srl-salt-agent/ca/srl1/srl1.pem:/home/salt/srl1.pem"
+      - "clab-srl-salt-agent/ca/srl2/srl2.pem:/home/salt/srl2.pem"
+
+      # - "/Projects/srlinux-22.6.1-281.bin:/home/salt/data/srv/salt/srlinux-22.6.1-281.bin"
+      # - "clab-srl-salt-agent/ca/root/root-ca.pem:/home/salt/data/keys/root-ca.pem"
+      # - "salt-master-data:/home/salt/data"
+
+    # see https://salt-nornir.readthedocs.io/en/latest/Getting%20started.html#configure-proxy-minion
+
+    srl1:
+      startup-config: salt-prometheus.cmd
+      mgmt_ipv4: 172.20.20.21
+      binds:
+      # - "salt_data_srv/salt/srlinux/srlinux-22.6.1-281.bin:/tmp/srlinux-22.6.1-281.bin"
+      - "../../srl-prometheus-exporter/yang/:/opt/prometheus-exporter/yang/"
+      - "../../srl-prometheus-exporter/builds/srl-prometheus-exporter:/opt/srlinux/usr/bin/srl-prometheus-exporter"
+      # - "clab-srl-salt-agent/ca/srl1/srl1.pem:/home/salt/data/keys/srl1.pem"
+      #   - "../srl-salty-minion-agent:/opt/srl-salty-minion-agent" # mount dir with agent code
+      #   - "../logs/srl1:/var/log/srlinux" # expose srlinux logs to a dev machine
+      #   - "../srl-salty-minion-agent.yml:/etc/opt/srlinux/appmgr/srl-salty-minion-agent.yml" # put agent config file to appmgr directory
+      #   - "../logs/srl1:/etc/salt/pki/minion"
+      #   - "../logs/srl1:/home/salt/data/logs/"
+    srl2:
+      startup-config: allow-salt-tcp.cmd
+      mgmt_ipv4: 172.20.20.22
+      # binds:
+      #   - "../srl-salty-minion-agent:/opt/srl-salty-minion-agent" # mount dir with agent code
+      #   - "../logs/srl2:/var/log/srlinux" # expose srlinux logs to a dev machine
+      #   - "../srl-salty-minion-agent.yml:/etc/opt/srlinux/appmgr/srl-salty-minion-agent.yml" # put agent config file to appmgr directory
+      #   - "../logs/srl2:/etc/salt/pki/minion"
+      #   - "../logs/srl2:/home/salt/data/logs/"
+  links:
+    - endpoints:
+        - "srl1:e1-1"
+        - "srl2:e1-1"
