@@ -1,0 +1,8 @@
+/interface ethernet-1/1 vlan-tagging true
+{# Note 1024 is the maximum number of routed interfaces per port #}
+{% for vlan in range(1024) %}
+{% set v = vlan+1 %}
+/interface ethernet-1/1 subinterface {{v}} vlan encap single-tagged vlan-id {{v}}
+/interface ethernet-1/1 subinterface {{v}} ipv4 address 10.{{ (v / 256) | int() }}.{{ (v % 256) | int() }}.1/24
+{% endfor %}
+commit stay
