@@ -1,0 +1,7 @@
+/interface ethernet-1/1 vlan-tagging true
+{# Note 4094 is the maximum number of VLANs per port #}
+{% for vlan in range(4094) %}
+{% set v = vlan+1 %}
+/interface ethernet-1/1 subinterface {{v}} type bridged vlan encap single-tagged vlan-id {{v}}
+{% endfor %}
+commit stay

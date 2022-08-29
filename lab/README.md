@@ -18,8 +18,9 @@ Note that 'async' is used to avoid timeouts
 ```
 time wget -4 -q http://clab-srl-salt-agent-srl1:8888/metrics -O-
 ```
+Note that the configured ACL is IPV4-only, hence '-4' to force the use of IPv4
 
-Output:
+Output for 1024 routed vlans:
 ```
 ...
 subinterfaces_out_packets{interface_name="ethernet-1/1",subinterface_index="998"} 0
@@ -31,4 +32,14 @@ user	0m0.004s
 sys	0m0.017s
 ```
 
-Note that the configured ACL is IPV4-only, hence '-4' to force the use of IPv4
+Output for 4094 bridged vlans templates/configure_4094_vlans.j2:
+```
+...
+subinterfaces_out_packets{interface_name="ethernet-1/1",subinterface_index="998"} 0
+subinterfaces_out_packets{interface_name="ethernet-1/1",subinterface_index="999"} 0
+subinterfaces_out_packets{interface_name="mgmt0",subinterface_index="0"} 126765
+
+real	0m3.700s
+user	0m0.000s
+sys	0m0.082s
+```
