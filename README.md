@@ -5,7 +5,7 @@ SR Linux agent that configures and starts a Salt Minion process
 This example provides a minimal but functional integration between SR Linux and Salt. It consists of a simple Python program that receives the Master address through the NDK,
 and then starts the standard salt-minion script with a custom configuration file.
 
-While it may be possible to do a "pure Python" integration, the additional complexity and devitation from the open source project base seems unnescessary. 
+While it may be possible to do a "pure Python" integration, the additional complexity and devitation from the open source project base seems unnecessary. 
 
 ## Demo scenario
 In the 'lab' directory:
